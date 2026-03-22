@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.1](https://github.com/baontq23/node-telegram-cli/compare/v1.0.0...v1.0.1) (2026-03-22)
+
+
+### Bug Fixes
+
+* ignore changelog from prettier format check ([15de8cc](https://github.com/baontq23/node-telegram-cli/commit/15de8cc3a21f8b4d0c859b0e9ec4f8a0b6da12aa))
+
 ## 1.0.0 (2026-03-22)
 
 
