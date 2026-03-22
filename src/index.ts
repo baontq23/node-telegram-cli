@@ -36,7 +36,7 @@ import { printError } from "./formatter.js";
 const program = new Command();
 
 program
-  .name("telegram")
+  .name("ntg")
   .description(
     "CLI tool to access your Telegram account via MTProto. Send/read messages, manage groups, search, and more."
   )
