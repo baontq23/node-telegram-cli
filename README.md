@@ -221,24 +221,6 @@ npm link
 ntg --help
 ```
 
-## Release Process
-
-This project uses [Conventional Commits](https://www.conventionalcommits.org/) and [release-please](https://github.com/googleapis/release-please) for automated releases:
-
-1. Commit using conventional format: `feat:`, `fix:`, `chore:`, etc.
-2. Push to `main` — release-please creates a Release PR automatically
-3. Merge the Release PR — triggers npm publish + GitHub Release
-
-## CI/CD
-
-| Workflow             | Trigger       | What it does                                          |
-| -------------------- | ------------- | ----------------------------------------------------- |
-| `ci.yml`             | Every push/PR | Lint + format check + typecheck + build               |
-| `release-please.yml` | Push to main  | Auto-creates Release PR with version bump + CHANGELOG |
-| `publish.yml`        | Tag `v*.*.*`  | Build + npm publish + GitHub Release                  |
-
-> **Setup:** Add `NPM_TOKEN` secret to your GitHub repository settings (Settings > Secrets > Actions).
-
 ## License
 
 MIT
