@@ -5,10 +5,10 @@ A powerful CLI tool to access your Telegram account directly from the terminal. 
 ## Installation
 
 ```bash
-npm install -g telegram-cli-tool
+npm install -g node-telegram-cli
 ```
 
-**Requirements:** Node.js >= 18
+**Requirements:** Node.js >= 20
 
 ## Prerequisites
 
