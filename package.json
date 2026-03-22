@@ -1,5 +1,5 @@
 {
-  "name": "telegram-cli-tool",
+  "name": "node-telegram-cli",
   "version": "0.1.0",
   "description": "A powerful CLI tool to access your Telegram account. Send/read messages, manage groups, search, and more via MTProto.",
   "main": "./dist/index.js",
@@ -24,10 +24,20 @@
     "mtproto",
     "telegram-client",
     "messaging",
-    "chat"
+    "chat",
+    "terminal",
+    "node-telegram"
   ],
-  "author": "",
+  "author": "baontq23",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/baontq23/node-telegram-cli.git"
+  },
+  "bugs": {
+    "url": "https://github.com/baontq23/node-telegram-cli/issues"
+  },
+  "homepage": "https://github.com/baontq23/node-telegram-cli#readme",
   "files": [
     "dist",
     "bin",
