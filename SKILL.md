@@ -2,7 +2,7 @@
 
 > CLI tool for Telegram via MTProto. Enables AI agents to send/read messages, manage groups, search conversations, and automate Telegram workflows.
 
-**Repository:** [github.com/baontq23/node-telegram-cli](https://github.com/baontq23/node-telegram-cli)
+**Repository:** [github.com/baontq23/node-telegram-cli](https://github.com/baontq23/node-telegram-cli) · **npm:** [node-telegram-cli](https://www.npmjs.com/package/node-telegram-cli) (published with [provenance](https://www.npmjs.com/package/node-telegram-cli#provenance))
 
 ## Installation
 
