@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.3.0](https://github.com/baontq23/node-telegram-cli/compare/v1.2.0...v1.3.0) (2026-03-23)
+
+
+### Features
+
+* add silent mode for sending messages ([017eb07](https://github.com/baontq23/node-telegram-cli/commit/017eb07cd94eb258bce78480f1edf2759b928254))
+
 ## [1.2.0](https://github.com/baontq23/node-telegram-cli/compare/v1.1.0...v1.2.0) (2026-03-23)
 
 
