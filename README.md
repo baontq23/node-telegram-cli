@@ -66,6 +66,12 @@ ntg chat @username
 | `ntg restore-msg <msg-id>` | Restore a deleted message (limited support)        |
 | `ntg inbox [options]`      | View recent messages or conversations              |
 
+**Message options:**
+
+| Flag           | Description                                         |
+| -------------- | --------------------------------------------------- |
+| `-s, --silent` | Send silently (no notification sound for recipient) |
+
 **Inbox options:**
 
 | Flag                | Description                                                 |
@@ -78,6 +84,12 @@ ntg chat @username
 **Examples:**
 
 ```bash
+# Send a message
+ntg msg @username "Hello!"
+
+# Send silently (no notification sound)
+ntg msg @username "Hello!" --silent
+
 # All recent conversations
 ntg inbox
 

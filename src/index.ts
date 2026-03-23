@@ -82,9 +82,10 @@ function requireAuth() {
 program
   .command("msg <peer> <text>")
   .description("Send a message to a peer")
-  .action(async (peer: string, text: string) => {
+  .option("-s, --silent", "Send silently (no notification sound for recipient)")
+  .action(async (peer: string, text: string, options: { silent?: boolean }) => {
     requireAuth();
-    await sendMessage(peer, text);
+    await sendMessage(peer, text, { silent: options.silent });
     await disconnectClient();
   });
 

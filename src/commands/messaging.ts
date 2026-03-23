@@ -50,13 +50,21 @@ function toMessageDisplay(msg: any): MessageDisplay {
   };
 }
 
-export async function sendMessage(peer: string, text: string): Promise<void> {
+export async function sendMessage(
+  peer: string,
+  text: string,
+  options?: { silent?: boolean }
+): Promise<void> {
   await withClient(async (client) => {
-    const result = await client.sendMessage(peer, { message: text });
+    const result = await client.sendMessage(peer, {
+      message: text,
+      silent: options?.silent,
+    });
     if (isJsonMode()) {
-      outputResult({ ok: true, messageId: result.id, peer, text });
+      outputResult({ ok: true, messageId: result.id, peer, text, silent: !!options?.silent });
     } else {
-      await printSuccess(`Message sent to ${peer}`);
+      const silentLabel = options?.silent ? " (silent)" : "";
+      await printSuccess(`Message sent to ${peer}${silentLabel}`);
     }
   });
 }

@@ -131,6 +131,9 @@ ntg --json chat-info "Group Name"
 # Send a text message
 ntg msg @username "Hello from AI agent"
 
+# Send silently (no notification sound for recipient)
+ntg msg @username "status update" --silent
+
 # Forward a message by ID
 ntg fwd @recipient 12345
 
