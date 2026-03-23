@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.0](https://github.com/baontq23/node-telegram-cli/compare/v1.0.1...v1.1.0) (2026-03-23)
+
+
+### Features
+
+* improve media message display and add clean-downloads command ([8212b5a](https://github.com/baontq23/node-telegram-cli/commit/8212b5addc059bd78071b519536e5f4d82781d07))
+
 ## [1.0.1](https://github.com/baontq23/node-telegram-cli/compare/v1.0.0...v1.0.1) (2026-03-22)
 
 
