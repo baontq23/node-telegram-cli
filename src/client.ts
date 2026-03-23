@@ -41,7 +41,14 @@ export async function withClient<T>(fn: (client: TelegramClient) => Promise<T>):
 
 export async function disconnectClient(): Promise<void> {
   if (_client) {
-    await _client.disconnect();
+    try {
+      await _client.disconnect();
+    } catch {
+      // Ignore disconnect errors
+    }
     _client = null;
+    // GramJS keeps internal timers/reconnection handlers alive after disconnect,
+    // preventing Node.js from exiting naturally. Force exit since all work is done.
+    process.exit(0);
   }
 }

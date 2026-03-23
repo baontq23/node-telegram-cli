@@ -20,6 +20,7 @@ import {
   viewMedia,
   forwardMedia,
   setProfilePhoto,
+  cleanDownloads,
 } from "./commands/multimedia.js";
 import {
   chatInfo,
@@ -202,8 +203,9 @@ program
 program
   .command("download <msgId>")
   .description("Download media from a message")
+  .option("-c, --chat <peer>", "Chat/peer where the message is (default: Saved Messages)")
   .option("-t, --type <type>", "Media type: photo, video, audio, doc")
-  .action(async (msgId: string, options: { type?: string }) => {
+  .action(async (msgId: string, options: { type?: string; chat?: string }) => {
     requireAuth();
     await downloadMedia(parseInt(msgId, 10), options);
     await disconnectClient();
@@ -212,8 +214,9 @@ program
 program
   .command("view <msgId>")
   .description("Download media and open with system viewer")
+  .option("-c, --chat <peer>", "Chat/peer where the message is (default: Saved Messages)")
   .option("-t, --type <type>", "Media type: photo, video, audio, doc")
-  .action(async (msgId: string, options: { type?: string }) => {
+  .action(async (msgId: string, options: { type?: string; chat?: string }) => {
     requireAuth();
     await viewMedia(parseInt(msgId, 10), options);
     await disconnectClient();
@@ -235,6 +238,13 @@ program
     requireAuth();
     await setProfilePhoto(file);
     await disconnectClient();
+  });
+
+program
+  .command("clean-downloads")
+  .description("Delete all downloaded media files")
+  .action(async () => {
+    await cleanDownloads();
   });
 
 // ─── Group Chat ──────────────────────────────────────────────────

@@ -55,6 +55,8 @@ All commands support `--json` as a **global flag** (before the subcommand or aft
     "type": "user",
     "unreadCount": 0,
     "lastMessage": "Hello!",
+    "lastMessageId": 3189,
+    "mediaType": null,
     "date": "2026-03-22T10:18:20.000Z"
   }
 ]
@@ -62,6 +64,23 @@ All commands support `--json` as a **global flag** (before the subcommand or aft
 
 - `peerType`: `"username"` | `"phone"` | `"id"`
 - `type`: `"user"` | `"group"` | `"channel"`
+- `mediaType`: `"photo"` | `"video"` | `"document"` | `"audio"` | `"voice"` | `"sticker"` | `"location"` | `"contact"` | `"poll"` | `null`
+- `lastMessage`: text/caption only (empty string if media-only message)
+- `lastMessageId`: message ID, use with `ntg download <id>` to download media
+
+### JSON Output Schema — `inbox --chat`
+
+````json
+[
+  {
+    "id": 3189,
+    "date": "2026-03-23T03:04:59.000Z",
+    "sender": "Contact Name",
+    "text": "",
+    "mediaType": "photo",
+    "isOutgoing": false
+  }
+]
 
 ## Peer Format
 
@@ -102,7 +121,7 @@ ntg --json global-search "keyword"
 
 # Get group/channel info
 ntg --json chat-info "Group Name"
-```
+````
 
 ### Write Operations (Has Side Effects)
 
@@ -124,9 +143,15 @@ ntg send-photo @username ./photo.jpg
 ntg send-video @username ./video.mp4
 ntg send-file @username ./document.txt
 
-# Download media from message
-ntg download 12345
-ntg download 12345 --type photo
+# Download media from message (must specify --chat)
+ntg download 12345 --chat @username
+ntg download 12345 --chat @username --type photo
+
+# View media (download + open with system viewer)
+ntg view 12345 --chat @username
+
+# Clean up all downloaded files
+ntg clean-downloads
 ```
 
 ### Group Management
@@ -186,6 +211,20 @@ ntg --json inbox --chat @group_name --limit 5
 
 ```bash
 ntg msg "My Group" "Deployment completed successfully"
+```
+
+### 5. Download media from a chat
+
+```bash
+# List messages with media info
+MSGS=$(ntg --json inbox --chat @username --limit 10)
+
+# Download a specific media message by ID
+ntg download 3189 --chat @username
+# File saved to ~/.telegram-cli/downloads/3189_<timestamp>.jpg
+
+# Clean up when done
+ntg clean-downloads
 ```
 
 ## Error Handling

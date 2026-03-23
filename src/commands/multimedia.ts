@@ -110,10 +110,11 @@ export async function sendTextFile(peer: string, filePath: string): Promise<void
 
 export async function downloadMedia(
   msgId: number,
-  options: { type?: string } = {}
+  options: { type?: string; chat?: string } = {}
 ): Promise<string | null> {
   return await withClient(async (client) => {
-    const messages = await client.getMessages("me", {
+    const peer = options.chat || "me";
+    const messages = await client.getMessages(peer, {
       ids: [msgId],
     });
 
@@ -180,7 +181,10 @@ export async function downloadMedia(
   });
 }
 
-export async function viewMedia(msgId: number, options: { type?: string } = {}): Promise<void> {
+export async function viewMedia(
+  msgId: number,
+  options: { type?: string; chat?: string } = {}
+): Promise<void> {
   const filePath = await downloadMedia(msgId, options);
   if (!filePath) return;
 
@@ -273,4 +277,42 @@ export async function setProfilePhoto(filePath: string): Promise<void> {
       await printSuccess("Profile photo updated!");
     }
   });
+}
+
+export async function cleanDownloads(): Promise<void> {
+  const downloadDir = getDownloadDir();
+  const files = fs.readdirSync(downloadDir);
+
+  if (files.length === 0) {
+    if (isJsonMode()) {
+      outputResult({ ok: true, action: "clean_downloads", deleted: 0, freedBytes: 0 });
+    } else {
+      await printInfo("Download folder is already empty.");
+    }
+    return;
+  }
+
+  let totalSize = 0;
+  for (const file of files) {
+    const filePath = path.join(downloadDir, file);
+    const stat = fs.statSync(filePath);
+    if (stat.isFile()) {
+      totalSize += stat.size;
+      fs.unlinkSync(filePath);
+    }
+  }
+
+  const freedMB = (totalSize / 1024 / 1024).toFixed(2);
+
+  if (isJsonMode()) {
+    outputResult({
+      ok: true,
+      action: "clean_downloads",
+      deleted: files.length,
+      freedBytes: totalSize,
+    });
+  } else {
+    await printSuccess(`Deleted ${files.length} file(s), freed ${freedMB} MB`);
+    await printInfo(`Folder: ${downloadDir}`);
+  }
 }

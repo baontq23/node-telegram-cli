@@ -34,7 +34,9 @@ export async function formatMessage(msg: MessageDisplay): Promise<string> {
   const time = chalk.gray(formatTime(msg.date));
   const sender = msg.isOutgoing ? chalk.green.bold("You") : chalk.cyan.bold(msg.sender);
   const text = msg.text || "";
-  const media = msg.media ? chalk.yellow(` [${msg.media}]`) : "";
+  const media = msg.media
+    ? chalk.yellow(` [${msg.media}`) + chalk.gray(` · download ${msg.id}`) + chalk.yellow("]")
+    : "";
 
   return `${time} ${sender}: ${text}${media}`;
 }
