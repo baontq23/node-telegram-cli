@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.0](https://github.com/baontq23/node-telegram-cli/compare/v1.1.0...v1.2.0) (2026-03-23)
+
+
+### Features
+
+* store session and credentials securely in OS Keychain ([7e3b7b8](https://github.com/baontq23/node-telegram-cli/commit/7e3b7b84587dc92d543a159b60065edd7258f40a))
+
 ## [1.1.0](https://github.com/baontq23/node-telegram-cli/compare/v1.0.1...v1.1.0) (2026-03-23)
 
 
