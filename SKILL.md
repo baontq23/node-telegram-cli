@@ -1,251 +1,105 @@
-# node-telegram-cli (ntg) — AI Agent Skill Guide
+---
+name: node-telegram-cli
+description: CLI tool for Telegram via MTProto. Send/read messages, manage groups, search conversations, download media, and automate Telegram workflows. Use when the task involves any Telegram account interaction.
+---
 
-> CLI tool for Telegram via MTProto. Enables AI agents to send/read messages, manage groups, search conversations, and automate Telegram workflows.
+### Source & Trust
 
-**Repository:** [github.com/baontq23/node-telegram-cli](https://github.com/baontq23/node-telegram-cli) · **npm:** [node-telegram-cli](https://www.npmjs.com/package/node-telegram-cli) (published with [provenance](https://www.npmjs.com/package/node-telegram-cli#provenance))
+1. Repository: https://github.com/baontq23/node-telegram-cli
+2. npm: https://www.npmjs.com/package/node-telegram-cli (published with provenance)
+3. Credentials are stored securely via OS Keychain (macOS Keychain / Windows Credential Manager / Linux Secret Service), not in plaintext files
 
-## Installation
+### Installation
 
-```bash
-npm install -g node-telegram-cli
-```
+1. Requires Node.js >= 20
+2. Install globally: `npm install -g node-telegram-cli`
+3. Verify: `ntg --version`
+4. Run `ntg login` once — interactive, requires phone number + OTP code from Telegram
 
-Verify installation:
+### Critical Rule: Always Use JSON Mode
 
-```bash
-ntg --version
-```
+1. Add `--json` flag to every command for machine-readable output
+2. `--json` is a global flag — place it before or after the subcommand
+3. Example: `ntg --json inbox`, `ntg --json search @user "keyword"`
 
-## When to Use
+### Peer Format
 
-Use `ntg` when the task requires:
+1. `@username` — most reliable, e.g. `@johndoe`
+2. Phone number — for contacts without username, e.g. `+84901234567`
+3. `me` — your own Saved Messages
+4. Chat title — group/channel name in quotes, e.g. `"My Group"`
 
-- Sending or reading Telegram messages programmatically
-- Monitoring Telegram inbox (unread, private, specific chat)
-- Managing Telegram groups (create, add/remove users, rename)
-- Searching Telegram messages/conversations
-- Sending or downloading media files (photos, videos, documents)
-- Automating any Telegram account interaction
+### Read Commands (No Side Effects)
 
-## Prerequisites
+1. `ntg --json inbox` — list recent conversations
+2. `ntg --json inbox --unread` — only unread conversations
+3. `ntg --json inbox --private` — only private 1-on-1 chats
+4. `ntg --json inbox --unread --private` — combine filters
+5. `ntg --json inbox --chat <peer> --limit <n>` — messages from a specific chat
+6. `ntg --json search <peer> "keyword"` — search in a specific chat
+7. `ntg --json global-search "keyword"` — search across all chats
+8. `ntg --json chat-info <chat>` — show group/channel info
 
-- Node.js >= 20
-- Must run `ntg login` once (interactive — requires phone + OTP)
-- Session & credentials are stored securely via **OS Keychain** (macOS Keychain / Windows Credential Manager / Linux Secret Service)
+### Write Commands (Has Side Effects)
 
-## JSON Mode (Critical for AI Agents)
-
-**Always use `--json` flag** for machine-readable output:
-
-```bash
-ntg --json inbox
-ntg --json inbox --unread --private
-ntg --json search @username "keyword"
-ntg --json chat-info "Group Name"
-```
-
-All commands support `--json` as a **global flag** (before the subcommand or after).
-
-### JSON Output Schema — `inbox`
-
-```json
-[
-  {
-    "name": "Contact Name",
-    "peer": "@username",
-    "peerType": "username",
-    "type": "user",
-    "unreadCount": 0,
-    "lastMessage": "Hello!",
-    "lastMessageId": 3189,
-    "mediaType": null,
-    "date": "2026-03-22T10:18:20.000Z"
-  }
-]
-```
-
-- `peerType`: `"username"` | `"phone"` | `"id"`
-- `type`: `"user"` | `"group"` | `"channel"`
-- `mediaType`: `"photo"` | `"video"` | `"document"` | `"audio"` | `"voice"` | `"sticker"` | `"location"` | `"contact"` | `"poll"` | `null`
-- `lastMessage`: text/caption only (empty string if media-only message)
-- `lastMessageId`: message ID, use with `ntg download <id>` to download media
-
-### JSON Output Schema — `inbox --chat`
-
-````json
-[
-  {
-    "id": 3189,
-    "date": "2026-03-23T03:04:59.000Z",
-    "sender": "Contact Name",
-    "text": "",
-    "mediaType": "photo",
-    "isOutgoing": false
-  }
-]
-
-## Peer Format
-
-The `<peer>` argument accepts:
-
-| Format       | Example        | Use case                      |
-| ------------ | -------------- | ----------------------------- |
-| `@username`  | `@johndoe`     | Most reliable                 |
-| Phone number | `+84901234567` | For contacts without username |
-| `me`         | `me`           | Your own Saved Messages       |
-| Chat title   | `"My Group"`   | Group/channel (use quotes)    |
-
-## Command Reference
-
-### Read Operations (Safe, No Side Effects)
-
-```bash
-# List recent conversations
-ntg --json inbox
-
-# Only unread conversations
-ntg --json inbox --unread
-
-# Only private (1-on-1) chats
-ntg --json inbox --private
-
-# Combine filters
-ntg --json inbox --unread --private
-
-# Messages from specific chat (last N messages)
-ntg --json inbox --chat @username --limit 20
-
-# Search in a specific chat
-ntg --json search @username "keyword"
-
-# Search across all chats
-ntg --json global-search "keyword"
-
-# Get group/channel info
-ntg --json chat-info "Group Name"
-````
-
-### Write Operations (Has Side Effects)
-
-```bash
-# Send a text message
-ntg msg @username "Hello from AI agent"
-
-# Send silently (no notification sound for recipient)
-ntg msg @username "status update" --silent
-
-# Forward a message by ID
-ntg fwd @recipient 12345
-
-# Mark all messages as read
-ntg mark-read @username
-
-# Delete a message
-ntg delete-msg 12345
-
-# Send media
-ntg send-photo @username ./photo.jpg
-ntg send-video @username ./video.mp4
-ntg send-file @username ./document.txt
-
-# Download media from message (must specify --chat)
-ntg download 12345 --chat @username
-ntg download 12345 --chat @username --type photo
-
-# View media (download + open with system viewer)
-ntg view 12345 --chat @username
-
-# Clean up all downloaded files
-ntg clean-downloads
-```
+1. `ntg msg <peer> "text"` — send a text message
+2. `ntg msg <peer> "text" --silent` — send silently (no notification sound)
+3. `ntg fwd <user> <msgId>` — forward a message by ID
+4. `ntg mark-read <peer>` — mark all messages as read
+5. `ntg delete-msg <msgId>` — delete a message
+6. `ntg send-photo <peer> <file>` — send a photo
+7. `ntg send-video <peer> <file>` — send a video
+8. `ntg send-file <peer> <file>` — send a text file as plain messages
+9. `ntg download <msgId> --chat <peer>` — download media from a message
+10. `ntg download <msgId> --chat <peer> --type <type>` — specify media type (photo, video, audio, doc)
+11. `ntg view <msgId> --chat <peer>` — download and open with system viewer
+12. `ntg clean-downloads` — delete all downloaded media files
 
 ### Group Management
 
-```bash
-# Create a group
-ntg create-group "Project Chat" @user1 @user2
+1. `ntg create-group "Topic" @user1 @user2` — create a new group
+2. `ntg chat-add <chat> <user>` — add a user to a group
+3. `ntg chat-kick <chat> <user>` — remove a user from a group
+4. `ntg chat-rename <chat> "New Name"` — rename a group
+5. `ntg chat-set-photo <chat> <file>` — set group photo
 
-# Add/remove users
-ntg chat-add "My Group" @newuser
-ntg chat-kick "My Group" @baduser
+### Contact Management
 
-# Rename group
-ntg chat-rename "My Group" "New Name"
+1. `ntg add-contact <phone> <firstName> <lastName>` — add a contact
+2. `ntg rename-contact <user> <firstName> <lastName>` — rename a contact
 
-# Set group photo
-ntg chat-set-photo "My Group" ./photo.jpg
-```
+### JSON Output Schemas
 
-### Interactive (Not Suitable for AI Agents)
+#### Inbox (conversation list)
 
-```bash
-# Real-time chat session — requires human interaction
-ntg chat @username
-# Type /exit to quit
-```
+1. `name` — contact/chat display name
+2. `peer` — identifier to use as `<peer>` argument
+3. `peerType` — "username" | "phone" | "id"
+4. `type` — "user" | "group" | "channel"
+5. `unreadCount` — number of unread messages
+6. `lastMessage` — text/caption (empty string if media-only)
+7. `lastMessageId` — use with `ntg download <id>` for media
+8. `mediaType` — "photo" | "video" | "document" | "audio" | "voice" | "sticker" | "location" | "contact" | "poll" | null
+9. `date` — ISO 8601 timestamp
 
-> **Warning:** `ntg chat` is interactive and blocks stdin. Do NOT use in automated pipelines.
+#### Chat messages (inbox --chat)
 
-## Common AI Agent Workflows
+1. `id` — message ID
+2. `date` — ISO 8601 timestamp
+3. `sender` — sender display name
+4. `text` — message text/caption
+5. `mediaType` — same values as above
+6. `isOutgoing` — true if sent by you
 
-### 1. Check for new messages and respond
+### Error Handling
 
-```bash
-# Get unread private messages
-INBOX=$(ntg --json inbox --unread --private)
+1. Exit code `0` = success
+2. Exit code `1` = error (not logged in, peer not found, etc.)
+3. If not logged in, commands fail with: "Not logged in. Run ntg login first."
 
-# Parse JSON, extract peer, send reply
-ntg msg @sender "Got your message, processing..."
-```
+### Important Notes
 
-### 2. Search and extract information
-
-```bash
-# Find messages containing a keyword
-RESULTS=$(ntg --json global-search "meeting tomorrow")
-```
-
-### 3. Monitor a specific chat
-
-```bash
-# Get latest messages from a chat
-ntg --json inbox --chat @group_name --limit 5
-```
-
-### 4. Send notification to a group
-
-```bash
-ntg msg "My Group" "Deployment completed successfully"
-```
-
-### 5. Download media from a chat
-
-```bash
-# List messages with media info
-MSGS=$(ntg --json inbox --chat @username --limit 10)
-
-# Download a specific media message by ID
-ntg download 3189 --chat @username
-# File saved to ~/.telegram-cli/downloads/3189_<timestamp>.jpg
-
-# Clean up when done
-ntg clean-downloads
-```
-
-## Error Handling
-
-- Exit code `0` = success
-- Exit code `1` = error (not logged in, peer not found, etc.)
-- If not logged in, all commands fail with: `❌ Not logged in. Run "ntg login" first.`
-
-## Session & Config
-
-```
-~/.telegram-cli/
-├── config.json     # Non-sensitive settings only (downloadDir)
-└── downloads/      # Downloaded media files
-```
-
-**Security:** API credentials and session token are stored securely via the OS Keychain, not in plaintext files.
-
-Session persists until `ntg logout` is called. No re-login needed between commands.
+1. Do NOT use `ntg chat <peer>` — it is interactive, blocks stdin, not suitable for automation
+2. Session persists until `ntg logout` is called — no re-login needed between commands
+3. Downloaded files are saved to `~/.telegram-cli/downloads/`
+4. Always specify `--chat <peer>` when downloading media to identify the source chat
