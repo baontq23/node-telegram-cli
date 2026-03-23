@@ -31,7 +31,7 @@ Use `ntg` when the task requires:
 
 - Node.js >= 20
 - Must run `ntg login` once (interactive — requires phone + OTP)
-- Session & credentials are stored securely in **OS Keychain** (macOS Keychain / Windows Credential Manager / Linux Secret Service)
+- Session & credentials are stored securely via **OS Keychain** (macOS Keychain / Windows Credential Manager / Linux Secret Service)
 
 ## JSON Mode (Critical for AI Agents)
 
@@ -243,6 +243,6 @@ ntg clean-downloads
 └── downloads/      # Downloaded media files
 ```
 
-**Security:** API credentials (`apiId`, `apiHash`) and session token are stored in the **OS Keychain**, not in plaintext files. On systems without a keychain (headless servers), credentials fall back to file storage with `0600` permissions and a warning is displayed.
+**Security:** API credentials and session token are stored securely via the OS Keychain, not in plaintext files.
 
 Session persists until `ntg logout` is called. No re-login needed between commands.
