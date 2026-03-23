@@ -1,8 +1,11 @@
 export interface TelegramConfig {
+  downloadDir: string;
+}
+
+export interface SecureConfig {
   apiId: number;
   apiHash: string;
   sessionString: string;
-  downloadDir: string;
 }
 
 export interface MessageDisplay {

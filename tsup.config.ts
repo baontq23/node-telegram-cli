@@ -10,4 +10,5 @@ export default defineConfig({
   dts: true,
   splitting: false,
   shims: true,
+  external: ["@napi-rs/keyring"],
 });

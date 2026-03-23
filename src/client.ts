@@ -1,18 +1,18 @@
 import { TelegramClient } from "telegram";
 import { StringSession } from "telegram/sessions/index.js";
 import { Logger, LogLevel } from "telegram/extensions/Logger.js";
-import { getConfig } from "./config.js";
+import { getSecureConfig } from "./config.js";
 
 let _client: TelegramClient | null = null;
 
 export function createClient(): TelegramClient {
-  const config = getConfig();
-  if (!config.apiId || !config.apiHash) {
+  const secure = getSecureConfig();
+  if (!secure.apiId || !secure.apiHash) {
     throw new Error("API credentials not configured. Run 'telegram login' first.");
   }
 
-  const session = new StringSession(config.sessionString || "");
-  const client = new TelegramClient(session, config.apiId, config.apiHash, {
+  const session = new StringSession(secure.sessionString || "");
+  const client = new TelegramClient(session, secure.apiId, secure.apiHash, {
     connectionRetries: 5,
     baseLogger: new Logger(LogLevel.NONE),
   });

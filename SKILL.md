@@ -2,6 +2,8 @@
 
 > CLI tool for Telegram via MTProto. Enables AI agents to send/read messages, manage groups, search conversations, and automate Telegram workflows.
 
+**Repository:** [github.com/baontq23/node-telegram-cli](https://github.com/baontq23/node-telegram-cli)
+
 ## Installation
 
 ```bash
@@ -29,7 +31,7 @@ Use `ntg` when the task requires:
 
 - Node.js >= 20
 - Must run `ntg login` once (interactive — requires phone + OTP)
-- Session persists at `~/.telegram-cli/config.json`
+- Session & credentials are stored securely in **OS Keychain** (macOS Keychain / Windows Credential Manager / Linux Secret Service)
 
 ## JSON Mode (Critical for AI Agents)
 
@@ -237,8 +239,10 @@ ntg clean-downloads
 
 ```
 ~/.telegram-cli/
-├── config.json     # API credentials & session string
+├── config.json     # Non-sensitive settings only (downloadDir)
 └── downloads/      # Downloaded media files
 ```
+
+**Security:** API credentials (`apiId`, `apiHash`) and session token are stored in the **OS Keychain**, not in plaintext files. On systems without a keychain (headless servers), credentials fall back to file storage with `0600` permissions and a warning is displayed.
 
 Session persists until `ntg logout` is called. No re-login needed between commands.
